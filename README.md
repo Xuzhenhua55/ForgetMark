@@ -53,13 +53,15 @@ This avoids high‑perplexity triggers, reduces detectability, and lowers false 
 
 ## 🧭 Pipeline
 
-```mermaid
-flowchart LR
-  A[🔑 Key Generation] --> B[🧪 Uncertainty-Driven Selection]
-  B --> C[🧩 Key–Value Set 𝓕]
-  C --> D[🎯 Targeted Unlearning (LoRA)]
-  D --> E[🔍 Verification (FSR: Prob + ROUGE)]
-```
+<p align="center">
+  <img src="doc/figures/pipeline.png" alt="ForgetMark Pipeline" width="85%" />
+  <br/>
+  <em>Pipeline: Key–Value selection → LoRA unlearning → FSR verification.</em>
+</p>
+
+Plain-text flow (fallback):
+
+[Key Generation] -> [Uncertainty-Driven Selection] -> [Key-Value Set F] -> [Targeted Unlearning (LoRA)] -> [Verification (FSR: Prob + ROUGE)]
 
 ---
 
