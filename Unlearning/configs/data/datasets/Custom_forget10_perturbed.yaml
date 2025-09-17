@@ -1,0 +1,6 @@
+handler: QADataset
+hf_args:
+  path: /work/zhb/open-unlearning-main_1/forget10_perturbed.json
+pro_args:
+  prompt_template: "<|im_start|>user\n{question}<|im_end|>\n<|im_start|>assistant\n"
+  completion_template: "{answer}<|im_end|>\n"

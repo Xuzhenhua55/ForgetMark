@@ -1,0 +1,18 @@
+model_args:
+  pretrained_model_name_or_path: "/root/.cache/modelscope/hub/models/robert/Mistral-7B-v0.3"
+  attn_implementation: 'flash_attention_2'
+  torch_dtype: bfloat16
+  device_map: "auto"
+
+tokenizer_args:
+  pretrained_model_name_or_path: "/root/.cache/modelscope/hub/models/robert/Mistral-7B-v0.3"
+  use_fast: true
+  legacy: false
+
+template_args:  # Used to create prompts in src/data/utils.py#preprocess_chat_instance
+  apply_chat_template: False
+  # Generic Q&A style tags for base (non-instruct) models
+  user_start_tag: "Question: "
+  user_end_tag: "\n"
+  asst_start_tag: "Answer: "
+  asst_end_tag: "\n\n"

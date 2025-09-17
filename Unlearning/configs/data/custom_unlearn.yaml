@@ -1,0 +1,6 @@
+defaults:
+  - datasets@forget: Custom_forget10
+  - datasets@retain: Custom_retain90
+  - datasets@eval: null
+
+anchor: forget

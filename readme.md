@@ -32,6 +32,7 @@ Provenance auditing for LLMs without obvious triggers. ForgetMark builds a compa
   - [1) Key–Value Construction](#1-keyvalue-construction)
   - [2) Targeted Unlearning (LoRA)](#2-targeted-unlearning-lora)
   - [3) Fingerprint Verification (FSR)](#3-fingerprint-verification-fsr)
+  - [🧬 Model Merging Results](#-model-merging-results)
   - [🗂 Repository Structure](#-repository-structure)
   - [📎 Converting the selection to QA JSON (example)](#-converting-the-selection-to-qa-json-example)
   - [📑 Citations and Acknowledgements](#-citations-and-acknowledgements)
@@ -207,11 +208,32 @@ Heads‑up on imports: the script expects the open‑unlearning style `src/` to 
 
 ---
 
+## 🧬 Model Merging Results
+
+We evaluate fingerprint identifiability when a fingerprinted model is merged with a donor model. Following the paper’s setup (see `main.tex` description): on Mistral, we unlearn Mistral‑7B‑v0.3 to obtain the fingerprinted model and merge it with Mistral‑7B‑Instruct‑v0.3 using MergeKit, sweeping strategies (Task, DARE‑Task, TIE, DARE‑Tie) and mixing ratios \(\alpha\in\{0.1,0.2,\ldots,0.9\}\). ForgetMark sustains high FSR across broad ratios, indicating forgetting‑based traces are more robust than fixed trigger–response fingerprints.
+
+<p align="center">
+  <img src="doc/merge_results/Mtask_merge.png" alt="Model merging: Task strategy" width="90%" />
+</p>
+
+<p align="center">
+  <img src="doc/merge_results/MtaskDARE_merge.png" alt="Model merging: DARE-Task strategy" width="90%" />
+</p>
+
+<p align="center">
+  <img src="doc/merge_results/Mties_merge.png" alt="Model merging: TIE strategy" width="90%" />
+</p>
+
+<p align="center">
+  <img src="doc/merge_results/MtiesDARE_merge.png" alt="Model merging: DARE-TIE strategy" width="90%" />
+</p>
+
+---
+
 ## 🗂 Repository Structure
 
 ```
 ForgetMark/
-├─ ForgetMark.tex                # Paper draft (method, experiments, ablations)
 ├─ Key-Value/                    # Key generation + uncertainty-driven selection references
 │  ├─ README.md
 │  ├─ Key.json                   # Example Keys

@@ -1,0 +1,115 @@
+# @package _global_
+
+defaults:
+  - override /model: ...
+  - override /trainer: GradDiff
+  - override /eval: tofu
+
+# Model configuration
+model:
+  model_args:
+    pretrained_model_name_or_path: "..."
+    device_map: "auto"
+    torch_dtype: bfloat16
+    attn_implementation: "flash_attention_2"
+  # LoRA configuration
+  use_peft: true             # Enable PEFT
+  peft_config:
+    peft_type: "LORA"        # PEFT type
+    r: 8                     # LoRA rank
+    lora_alpha: 16           # LoRA scaling factor
+    lora_dropout: 0.1        # LoRA dropout
+    target_modules: 
+      - "q_proj"
+      - "k_proj" 
+      - "v_proj"
+      - "o_proj"             # YAML list format
+    bias: "none"             # Bias setting
+    task_type: "CAUSAL_LM"   # Task type
+    inference_mode: false    # Ensure training mode
+
+# Data configuration
+forget_split: Custom_forget10
+retain_split: Custom_retain90
+holdout_split: null
+retain_logs_path: null
+question_key: "question"
+
+# Evaluation configuration
+eval:
+  tofu:
+    forget_split: Custom_forget10
+    holdout_split: ${holdout_split}
+    retain_logs_path: ${retain_logs_path}
+    overwrite: true
+    question_key: ${question_key}
+    
+# Data settings
+data:
+  anchor: forget
+  forget:
+    Custom_forget10:
+      handler: QADataset
+      args:
+        hf_args:
+          path: ".../forget10.json"
+        question_key: "question"
+        answer_key: "answer"
+  retain:
+    Custom_retain90:
+      handler: QADataset
+      args:
+        hf_args:
+          path: ".../retain90.json"
+        question_key: "question"
+        answer_key: "answer"
+  eval:  # Add evaluation dataset
+    Custom_forget10_eval:
+      handler: QADataset
+      args:
+        hf_args:
+          path: ".../forget10.json"
+        question_key: "question"
+        answer_key: "answer"
+
+# Trainer settings
+trainer:
+  args:
+    warmup_epochs: 1.0
+    learning_rate: 3e-4      # LoRA typically uses a higher learning rate
+    weight_decay: 0.01
+    num_train_epochs: 10
+    #max_steps: -1                    # Explicitly set to -1: no step limit, train by epochs
+    per_device_train_batch_size: 1  # Keep small batch size
+    gradient_accumulation_steps: 32  # Increase accumulation to reduce memory usage
+    gradient_checkpointing: false    # Temporarily disable gradient checkpointing to rule out issues
+    dataloader_pin_memory: false
+    fp16: false
+    bf16: true               # Use bfloat16 precision
+    do_eval: true            # Enable evaluation
+    eval_strategy: "steps"
+    eval_steps: 3           # Lower evaluation frequency
+    # Memory optimization
+    max_grad_norm: 1.0       # Gradient clipping
+    remove_unused_columns: true
+    dataloader_num_workers: 0  # Reduce data loader workers
+    # save_strategy: steps
+    # save_steps: 0.5
+    # GradDiff hyperparameters
+    gamma: 1.0             # Forget loss weight
+    alpha: 0.0              # Retain loss weight (=0 for no-retain ablation); e.g., 0.5
+    retain_loss_type: "NLL" # or "KL" (KL requires more memory)
+
+# Output paths
+paths:
+  output_dir: ...  # Custom output path (change directory name)
+
+model_save_path: ${paths.output_dir}/mistral_unlearn_lora_model
+model_name: "..."
+
+# Logging
+log_dir: ${paths.output_dir}/logs  # Custom log path
+save_every: 10
+log_every: 1
+
+task_name: ...
