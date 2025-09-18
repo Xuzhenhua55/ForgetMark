@@ -215,19 +215,19 @@ Heads‑up on imports: the script expects the open‑unlearning style `src/` to 
 We evaluate fingerprint identifiability when a fingerprinted model is merged with a donor model. Following the paper’s setup (see `main.tex` description): on Mistral, we unlearn Mistral‑7B‑v0.3 to obtain the fingerprinted model and merge it with Mistral‑7B‑Instruct‑v0.3 using MergeKit, sweeping strategies (Task, DARE‑Task, TIE, DARE‑Tie) and mixing ratios \(\alpha\in\{0.1,0.2,\ldots,0.9\}\). ForgetMark sustains high FSR across broad ratios, indicating forgetting‑based traces are more robust than fixed trigger–response fingerprints.
 
 <p align="center">
-  <img src="doc/merge_results/Mtask_merge.png" alt="Model merging: Task strategy" width="90%" />
+  <img src="doc/merge_results/Mtask_merge.png" alt="Model merging: Task strategy" width="50%" />
 </p>
 
 <p align="center">
-  <img src="doc/merge_results/MtaskDARE_merge.png" alt="Model merging: DARE-Task strategy" width="90%" />
+  <img src="doc/merge_results/MtaskDARE_merge.png" alt="Model merging: DARE-Task strategy" width="50%" />
 </p>
 
 <p align="center">
-  <img src="doc/merge_results/Mties_merge.png" alt="Model merging: TIE strategy" width="90%" />
+  <img src="doc/merge_results/Mties_merge.png" alt="Model merging: TIE strategy" width="50%" />
 </p>
 
 <p align="center">
-  <img src="doc/merge_results/MtiesDARE_merge.png" alt="Model merging: DARE-TIE strategy" width="90%" />
+  <img src="doc/merge_results/MtiesDARE_merge.png" alt="Model merging: DARE-TIE strategy" width="50%" />
 </p>
 
 ---
